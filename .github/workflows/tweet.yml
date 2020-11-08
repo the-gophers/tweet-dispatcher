@@ -1,0 +1,24 @@
+name: adhoc-tweet
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'message you want to tweet'
+        required: true
+      dry-run:
+        description: 'dry-run (true or false)'
+        required: false
+        default: false
+jobs:
+  tweet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: devigned/go-twitter-action@v1
+        env:
+          DRY_RUN: ${{ github.event.inputs.dry-run }}
+        with:
+          message: ${{ github.event.inputs.message }}
+          apiKey: ${{ secrets.API_KEY }}
+          apiKeySecret: ${{ secrets.API_KEY_SECRET }}
+          accessToken: ${{ secrets.ACCESS_TOKEN }}
+          accessTokenSecret: ${{ secrets.ACCESS_TOKEN_SECRET }}
